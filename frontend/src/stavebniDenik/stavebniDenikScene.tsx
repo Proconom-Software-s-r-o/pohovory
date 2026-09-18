@@ -29,7 +29,7 @@ const StavebniDenikScene = () => {
     const [selectedZaznamId, setSelectedZaznamId] = useState<Maybe<number>>(null);
     const [detailOtevren, setDetailOtevren] = useState(false);
 
-    // Dokud uzivatel pise, na API se nechodi - viz ukol 3
+    // Dokud uzivatel pise, na API se nechodi
     const hledatDebounced = useDebouncedValue(filtr.hledat);
 
     const { query, zaznamy } = useZaznamyQuery({ stavbaId, hledat: hledatDebounced, stav: filtr.stav });

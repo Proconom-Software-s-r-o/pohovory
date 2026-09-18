@@ -1,23 +1,23 @@
 # Pohovor – Stavební deník
 
-Malá dvouvrstvá aplikace pro programovací část pohovoru. Doména je zjednodušený **stavební deník**: ke stavbě se vedou denní záznamy (datum, počasí, teploty, počet pracovníků, popis prací, stav schvalování).
+Malá dvouvrstvá aplikace pro programovací část pohovoru. Doména je zjednodušený **stavební deník**: ke stavbě se vedou denní záznamy (datum, počasí, teploty, počet pracovníků, popis prací, stav schvalování). Nad záznamy jde filtrovat, zakládat je, editovat i mazat.
 
 Repozitář je záměrně napsaný ve stejném stylu jako naše ostré projekty, aby se v něm dalo pracovat tak, jak to u nás děláme doopravdy:
 
 - **backend** – ASP.NET Core Web API, CQRS přes MediatR, tenké controllery, DTO + AutoMapper. Místo databáze se **čte a zapisuje do JSON souborů** v `backend/Pohovor.Api/Data/`.
 - **frontend** – React 19 + TypeScript + Vite, `@tanstack/react-query`, MUI, i18next, Bootstrap utility třídy.
 
-Zadání pro kandidáta je v **[ZADANI.md](ZADANI.md)**.
+Aplikace je kompletní a funkční – testy na obou stranách jsou zelené.
 
 ---
 
 ## Požadavky
 
-| Nástroj    | Verze                                   |
-| ---------- | --------------------------------------- |
-| .NET SDK   | 10.0                                    |
-| Node.js    | 22+                                     |
-| pnpm       | 11+ (`corepack enable` nebo `npm i -g pnpm`) |
+| Nástroj  | Verze                                        |
+| -------- | -------------------------------------------- |
+| .NET SDK | 10.0                                         |
+| Node.js  | 22+                                          |
+| pnpm     | 11+ (`corepack enable` nebo `npm i -g pnpm`) |
 
 ## Spuštění
 
@@ -37,8 +37,6 @@ Testy:
 cd backend
 dotnet test
 ```
-
-> Testy jsou po naklonování **červené záměrně** – rozsvítit je je součástí zadání.
 
 ### Frontend
 
@@ -96,6 +94,20 @@ frontend/
       zaznamUtils.ts        + unit testy
 ```
 
+## Endpointy
+
+| Metoda   | Cesta                  | Co dělá                                                |
+| -------- | ---------------------- | ------------------------------------------------------ |
+| `GET`    | `/api/stavby`          | seznam aktivních staveb                                |
+| `GET`    | `/api/ciselnik`        | číselníky pro formulář (počasí, stavy)                 |
+| `GET`    | `/api/zaznamy`         | záznamy stavby; filtry `KStavba`, `Hledat`, `Stav`     |
+| `GET`    | `/api/zaznamy/{id}`    | detail záznamu                                         |
+| `POST`   | `/api/zaznamy`         | založení záznamu                                       |
+| `PUT`    | `/api/zaznamy/{id}`    | editace záznamu                                        |
+| `DELETE` | `/api/zaznamy/{id}`    | smazání záznamu (soft delete)                          |
+
+Byznysová pravidla, která backend hlídá: popis je povinný, datum nesmí být v budoucnosti, schválený záznam už nejde upravit ani smazat.
+
 ## Konvence, kterých se držíme
 
 **Backend**
@@ -124,4 +136,5 @@ frontend/
 
 - **Autentizace tu není.** Controllery mají explicitně `[AllowAnonymous]`; v ostré aplikaci je na jejich místě `[Authorize(Roles = Role.V1User)]`. Jméno autora záznamu se bere z hlavičky `X-User` (nastavuje se přes `VITE_USER` v `.env`).
 - **Gridy nejsou ze Syncfusion.** V ostré aplikaci se Syncfusion používá na gridy a stromy, tady je kvůli licenci nahrazený obyčejnou MUI tabulkou.
+- **Data se mění za běhu.** Soubory v `backend/Pohovor.Api/Data/` jsou verzované, takže po hraní s aplikací je vrátíte přes `git checkout -- backend/Pohovor.Api/Data`.
 - `dotnet build` hlásí `NU1903` u balíčku AutoMapper 13.0.1 – je to stejná verze, jakou má ostrá aplikace, a nechali jsme ji kvůli shodě. Opravená řada 15.x má jinou licenci.

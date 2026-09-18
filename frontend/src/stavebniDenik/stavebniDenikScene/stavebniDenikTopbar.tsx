@@ -23,15 +23,12 @@ const StavebniDenikTopbar = () => {
         []
     );
 
-    // ÚKOL 5 (bonus): dopocitat souhrn nad `zaznamy` a zobrazit ho vpravo v liste
-    //  - pocet zaznamu, prumerny pocet pracovniku (viz prumerPracovniku)
-    //    a obdobi od-do (viz obdobiZaznamu + formatApiDate)
-    //  - hodnoty se maji prepocitat jen pri zmene `zaznamy`, ne pri kazdem prekresleni
+    // Souhrn se pocita nad tim, co je prave v tabulce - tedy vcetne aktivnich filtru
     const souhrn = useMemo(
         () => ({
-            pocet: 0,
-            prumer: 0,
-            obdobi: '—',
+            pocet: zaznamy.length,
+            prumer: prumerPracovniku(zaznamy),
+            obdobi: obdobiZaznamu(zaznamy, (datum) => formatApiDate(datum)),
         }),
         [zaznamy]
     );

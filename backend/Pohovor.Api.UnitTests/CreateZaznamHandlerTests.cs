@@ -10,7 +10,7 @@ using Xunit;
 namespace Pohovor.Api.UnitTests
 {
     /// <summary>
-    /// Testy k ÚKOLU 1. Dokud neni <see cref="CreateZaznamHandler"/> hotovy, jsou cervene - to je zamer.
+    /// Testy zakladani zaznamu - doplneni autora a stavu serverem i vsechny validace.
     /// </summary>
     public class CreateZaznamHandlerTests : ZaznamHandlerTestBase
     {

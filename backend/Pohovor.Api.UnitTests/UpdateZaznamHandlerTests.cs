@@ -12,7 +12,7 @@ using Xunit;
 namespace Pohovor.Api.UnitTests
 {
     /// <summary>
-    /// Testy k ÚKOLU 2. Dokud neni <see cref="UpdateZaznamHandler"/> hotovy, jsou cervene - to je zamer.
+    /// Testy editace zaznamu - prepis editovatelnych property a zamek na schvaleny zaznam.
     /// </summary>
     public class UpdateZaznamHandlerTests : ZaznamHandlerTestBase
     {

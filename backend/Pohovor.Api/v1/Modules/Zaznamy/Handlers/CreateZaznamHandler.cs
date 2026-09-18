@@ -14,10 +14,8 @@ using Pohovor.Commons.Exceptions;
 namespace Pohovor.Api.v1.Modules.Zaznamy.Handlers
 {
     /// <summary>
-    /// ÚKOL 1 - zalozeni noveho zaznamu stavebniho deniku.
-    ///
-    /// Zadani je v ZADANI.md, testy na tenhle handler jsou v Pohovor.Api.UnitTests.
-    /// Vzor kompletniho handleru: <see cref="GetZaznamyHandler"/>, <see cref="DeleteZaznamHandler"/>.
+    /// Zalozeni noveho zaznamu stavebniho deniku. Autora doplnuje server z prihlaseneho
+    /// uzivatele, novy zaznam vznika vzdy jako rozpracovany.
     /// </summary>
     public class CreateZaznamHandler : IRequestHandler<CreateZaznamRequest, CreateZaznamResponse>
     {
@@ -40,14 +38,37 @@ namespace Pohovor.Api.v1.Modules.Zaznamy.Handlers
 
         public async Task<CreateZaznamResponse> Handle(CreateZaznamRequest request, CancellationToken cancellationToken)
         {
-            // TODO (ukol 1): implementovat
-            //  1) overit, ze stavba z request.Zaznam.KStavba existuje -> jinak BadDataException("Stavba neexistuje.")
-            //  2) overit, ze Popis neni prazdny -> BadDataException("Popis zaznamu je povinny.")
-            //  3) overit, ze Datum neni v budoucnosti -> BadDataException("Datum zaznamu nesmi byt v budoucnosti.")
-            //  4) namapovat DTO na model (_mapper), doplnit Autor (_claimResolver), Stav = Rozpracovany,
-            //     Vytvoreno = DateTime.Now
-            //  5) ulozit pres _zaznamManager a vratit namapovane ZaznamDTO
-            throw new NotImplementedException();
+            ZaznamCreateDTO dto = request.Zaznam
+                ?? throw new BadDataException("Chybi data zaznamu.");
+
+            Stavba stavba = await _stavbaManager.GetByIdAsync(dto.KStavba, cancellationToken)
+                ?? throw new BadDataException("Stavba neexistuje.");
+
+            if (string.IsNullOrWhiteSpace(dto.Popis))
+            {
+                throw new BadDataException("Popis zaznamu je povinny.");
+            }
+
+            if (dto.Datum.Date > DateTime.Today)
+            {
+                throw new BadDataException("Datum zaznamu nesmi byt v budoucnosti.");
+            }
+
+            Zaznam zaznam = _mapper.Map<Zaznam>(dto);
+            zaznam.KStavba = stavba.XId;
+            zaznam.Popis = dto.Popis.Trim();
+            zaznam.Autor = _claimResolver.ResolveUserName();
+            zaznam.Stav = StavZaznamu.Rozpracovany;
+            zaznam.Vytvoreno = DateTime.Now;
+            zaznam.Zmeneno = null;
+            zaznam.Smazano = null;
+
+            Zaznam ulozeny = await _zaznamManager.InsertAsync(zaznam, cancellationToken);
+
+            return new CreateZaznamResponse
+            {
+                Zaznam = _mapper.Map<ZaznamDTO>(ulozeny),
+            };
         }
     }
 

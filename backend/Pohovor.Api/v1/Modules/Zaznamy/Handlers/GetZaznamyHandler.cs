@@ -16,7 +16,6 @@ namespace Pohovor.Api.v1.Modules.Zaznamy.Handlers
 {
     /// <summary>
     /// Seznam zaznamu jedne stavby s volitelnym fulltextem a filtrem na stav.
-    /// Tenhle handler je kompletni - pouzij ho jako vzor pro ostatni.
     /// </summary>
     public class GetZaznamyHandler : IRequestHandler<GetZaznamyRequest, GetZaznamyResponse>
     {

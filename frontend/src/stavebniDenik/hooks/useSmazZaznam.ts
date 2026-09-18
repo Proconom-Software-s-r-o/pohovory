@@ -9,9 +9,6 @@ import ApiClientFactory from '../../services/api/apiClientFactory';
 
 /**
  * Hook to delete a diary entry, including the confirmation dialog.
- *
- * Tohle je hotovy vzor zapisove akce - podivej se sem, nez budes psat useUlozZaznam.
- *
  * @returns An object containing the delete action and its loading state.
  */
 const useSmazZaznam = () => {

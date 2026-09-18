@@ -13,9 +13,7 @@ using Pohovor.Commons.Exceptions;
 namespace Pohovor.Api.v1.Modules.Zaznamy.Handlers
 {
     /// <summary>
-    /// ÚKOL 2 - editace existujiciho zaznamu.
-    ///
-    /// Pozor na pravidlo z byznysu: schvaleny zaznam uz nelze menit.
+    /// Editace existujiciho zaznamu. Schvaleny zaznam uz menit nejde.
     /// </summary>
     public class UpdateZaznamHandler : IRequestHandler<UpdateZaznamRequest, UpdateZaznamResponse>
     {
@@ -30,13 +28,38 @@ namespace Pohovor.Api.v1.Modules.Zaznamy.Handlers
 
         public async Task<UpdateZaznamResponse> Handle(UpdateZaznamRequest request, CancellationToken cancellationToken)
         {
-            // TODO (ukol 2): implementovat
-            //  1) nacist zaznam podle request.ZaznamId -> jinak BadDataException("Zaznam neexistuje.")
-            //  2) pokud uz je Stav == StavZaznamu.Schvaleny -> BadDataException("Schvaleny zaznam nelze upravit.")
-            //  3) prepsat editovatelne property z request.Zaznam (Datum, Pocasi, teploty, PocetPracovniku, Popis, Stav)
-            //     - Autor a Vytvoreno se nemeni
-            //  4) nastavit Zmeneno = DateTime.Now, ulozit a vratit namapovane ZaznamDTO
-            throw new NotImplementedException();
+            ZaznamUpdateDTO dto = request.Zaznam
+                ?? throw new BadDataException("Chybi data zaznamu.");
+
+            Zaznam zaznam = await _zaznamManager.GetByIdAsync(request.ZaznamId, cancellationToken)
+                ?? throw new BadDataException("Zaznam neexistuje.");
+
+            if (zaznam.Stav == StavZaznamu.Schvaleny)
+            {
+                throw new BadDataException("Schvaleny zaznam nelze upravit.");
+            }
+
+            if (string.IsNullOrWhiteSpace(dto.Popis))
+            {
+                throw new BadDataException("Popis zaznamu je povinny.");
+            }
+
+            // Autor, KStavba a Vytvoreno se needituji
+            zaznam.Datum = dto.Datum;
+            zaznam.Pocasi = dto.Pocasi;
+            zaznam.TeplotaRano = dto.TeplotaRano;
+            zaznam.TeplotaOdpoledne = dto.TeplotaOdpoledne;
+            zaznam.PocetPracovniku = dto.PocetPracovniku;
+            zaznam.Popis = dto.Popis.Trim();
+            zaznam.Stav = dto.Stav;
+            zaznam.Zmeneno = DateTime.Now;
+
+            await _zaznamManager.UpdateAsync(zaznam, cancellationToken);
+
+            return new UpdateZaznamResponse
+            {
+                Zaznam = _mapper.Map<ZaznamDTO>(zaznam),
+            };
         }
     }
 
