@@ -1,0 +1,11 @@
+.panel-resizer {
+    background-color: #dfe4e8;
+    color: #7b8794;
+    border-radius: 4px;
+    outline: none;
+}
+
+.panel-resizer:hover,
+.panel-resizer[data-resize-handle-active] {
+    background-color: #b7c2cc;
+}

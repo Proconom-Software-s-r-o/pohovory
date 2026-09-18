@@ -1,0 +1,50 @@
+{
+    "$schema": "./node_modules/oxlint/configuration_schema.json",
+    "plugins": ["import", "react", "jsx-a11y", "eslint", "typescript"],
+    "categories": {
+        "correctness": "off"
+    },
+    "env": {
+        "builtin": true,
+        "node": true,
+        "vitest": true,
+        "es2020": true,
+        "browser": true,
+        "shared-node-browser": true
+    },
+    "ignorePatterns": ["build", "dist", "node_modules"],
+    "rules": {
+        "react/jsx-key": "warn",
+        "react/jsx-no-duplicate-props": "warn",
+        "react/jsx-no-undef": "warn",
+        "react/no-children-prop": "warn",
+        "react/no-unescaped-entities": "warn",
+        "react/button-has-type": "error",
+        "react/jsx-boolean-value": "error",
+        "react/jsx-curly-brace-presence": "error",
+        "react/jsx-no-constructed-context-values": "error",
+        "react/jsx-no-useless-fragment": "error",
+        "react/no-array-index-key": "error",
+        "react/self-closing-comp": "error",
+        "react/react-in-jsx-scope": "off",
+        "react/jsx-fragments": "warn",
+        "react-hooks/rules-of-hooks": "error",
+        "react-hooks/exhaustive-deps": "warn",
+        "jsx-a11y/anchor-has-content": "error",
+        "no-var": "error",
+        "no-console": "off",
+        "no-param-reassign": "error",
+        "prefer-const": "error",
+        "prefer-template": "error",
+        "object-shorthand": "error",
+        "no-nested-ternary": "warn",
+        "no-unneeded-ternary": "error",
+        "no-unused-vars": "off",
+        "@typescript-eslint/no-explicit-any": "off",
+        "@typescript-eslint/prefer-as-const": "error",
+        "import/no-duplicates": "warn",
+        "import/no-cycle": "error",
+        "import/prefer-default-export": "warn",
+        "import/extensions": ["warn", "never", { "json": "always", "css": "always", "scss": "always" }]
+    }
+}

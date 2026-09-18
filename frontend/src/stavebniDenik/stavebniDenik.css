@@ -1,0 +1,11 @@
+.bg-less-gray {
+    background-color: #f4f6f8;
+}
+
+.zaznam-row {
+    cursor: pointer;
+}
+
+.zaznam-row.selected {
+    background-color: rgba(27, 79, 114, 0.12);
+}

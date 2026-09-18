@@ -1,0 +1,22 @@
+html,
+body,
+#root,
+.proconom-app {
+    height: 100%;
+    margin: 0;
+}
+
+body {
+    font-family: Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background-color: #f4f6f8;
+    color: #1f2933;
+}
+
+.proconom-topbar {
+    background-color: #1b4f72;
+    color: #fff;
+}
+
+.proconom-topbar a {
+    color: inherit;
+}

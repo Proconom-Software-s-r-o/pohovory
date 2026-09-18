@@ -1,0 +1,26 @@
+[
+  {
+    "XId": 1,
+    "Nazev": "Rezidence Nad Parkem",
+    "Investor": "Bytové družstvo Nad Parkem",
+    "Aktivni": true
+  },
+  {
+    "XId": 2,
+    "Nazev": "Rekonstrukce mostu Lávka II",
+    "Investor": "Město Brandýs",
+    "Aktivni": true
+  },
+  {
+    "XId": 3,
+    "Nazev": "Sklad Logistic Park D8",
+    "Investor": "D8 Logistic s.r.o.",
+    "Aktivni": true
+  },
+  {
+    "XId": 99,
+    "Nazev": "Archivovaná stavba",
+    "Investor": "Archiv",
+    "Aktivni": false
+  }
+]

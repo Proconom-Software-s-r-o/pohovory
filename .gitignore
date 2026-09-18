@@ -427,3 +427,19 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
+
+# --- Pohovor: doplneno k VS sablone ---
+
+# .NET build output (VS sablona resi jen /x64 a /x86 varianty)
+[Bb]in/
+[Oo]bj/
+
+# Frontend
+frontend/build/
+frontend/dist/
+frontend/coverage/
+frontend/.vite/
+*.tsbuildinfo
+
+# Docasne soubory JSON uloziste
+backend/Pohovor.Api/Data/*.tmp
